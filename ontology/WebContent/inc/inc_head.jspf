@@ -1,0 +1,84 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="public/style/style.css"/>
+<link rel="stylesheet" type="text/css" href="public/style/datepicker.css"/>
+<script src="public/script/jquery-2.0.3.js"></script>
+<script src="public/script/jquery-ui.js"></script>
+<title>BCI Ontology - Linked Data Engine (Description of Resources)</title>
+<link rel="meta" type="application/rdf+xml" title=
+"BciOntology" href="http://bci.pet.cs.nctu.edu.tw/ontology#" />
+
+<script>
+	function divtoggle(id){
+		$(id).toggle("slow");
+	}
+	//Make the next div tag toggle
+	function nextdivtoggle(that){
+		$(that).next("div").toggle("slow");
+		//$(that).find("div").first().toggle("slow");
+	}
+	//Make the session toggle
+	function sessiontoggle(that){
+		$(that).next("div").toggle("slow");
+		$(".ERDetail").hide('slow');
+	}
+	function channel_locations_toggle(that){
+		$(that).find(".CLInfo").first().toggle("slow");
+	}
+	//Load options for a select list
+	function loadselectlist(id,url){
+		$(id).fadeTo('fast',0);
+		$(id).load(url, function() {
+			$(id).fadeTo('fast',1);
+		});
+	}    
+	//url encoding
+	function url_encode(url){
+		kq=url.replace(" ","%20").replace("<","%3C").replace(">","%3E").replace("#","%23");
+		return kq;
+	}  
+	//Multilevel menu
+	dangchon="";
+	cap2="";
+	bodem="";
+	bodem2="";
+	function mo(id){
+		if(dangchon) dangchon.style.visibility = 'hidden';/*an phan tu truoc do da duoc chon*/
+		if(bodem) window.clearTimeout(bodem);/*xoa cac bo dem truoc do*/
+		dangchon=document.getElementById(id);
+		dangchon.style.visibility = 'visible';
+	}
+	function dong(){
+		dangchon.style.visibility = 'hidden';
+	}
+	function cho(){
+		bodem=window.setTimeout(dong,500);/*ham dong khong duoc co ngoac va khong duoc co tham so*/
+	}
+	function chon(){
+		if(bodem) window.clearTimeout(bodem);
+	}
+	function mo2(id){
+		if(cap2) cap2.style.visibility = 'hidden';/*an phan tu truoc do da duoc chon*/
+		if(bodem2) window.clearTimeout(bodem2);/*xoa cac bo dem truoc do*/
+		cap2=document.getElementById(id);
+		cap2.style.visibility = 'visible';
+	}
+	function cho2(){
+		bodem2=window.setTimeout(dong2,500);/*ham dong khong duoc co ngoac va khong duoc co tham so*/
+	}
+	function chon2(){
+		window.clearTimeout(bodem2);
+	}
+	function dong2(){
+		cap2.style.visibility = 'hidden';
+	}
+	function banner_toggle(){
+		$("#panel").toggle("slow");
+		if($("#menubar").css("top")=="115px"){
+			$("#menubar").css("top","5px");
+			$("#wrapper").css("margin-top","30px");
+		}else{
+			$("#menubar").css("top","115px");
+			$("#wrapper").css("margin-top","140px");
+		}
+	}
+</script>

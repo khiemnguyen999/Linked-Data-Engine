@@ -1,0 +1,1981 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns="http://bci.pet.cs.nctu.edu.tw/ontology#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:dbp="http://dbpedia.org/ontology/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:ssn="http://purl.oclc.org/NET/ssnx/ssn#"
+    xml:base="http://bci.pet.cs.nctu.edu.tw/ontology">
+<!-- *********************************************************
+************** BCI ontology RDF/OWL definitions **************
+Release version: 0.9
+Core vocabularies: XDF, ESS 2.0, HED (tbd).
+
+Status: Stable.
+Editor: Sergio Rodriguez (srodriguez@pet.cs.nctu.edu.tw)
+Last update: $2014-08-06T15:44:09$
+********************************************************** -->
+  <owl:Ontology rdf:about="">
+    <rdfs:comment xml:lang="en">BCI ontology. [ Basic / initial model ]</rdfs:comment>
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >0.9</owl:versionInfo>
+  </owl:Ontology>
+  <rdfs:Class rdf:about="http://www.w3.org/2002/07/owl#real"/>
+  <owl:Class rdf:ID="Facility">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Place"/>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="en">Recording facility (i.e. lab) where a session holds.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="RecordedSubjectAtSession">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="hasWeight"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >10</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="hasHeight"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >40</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="en">Groups the metadata related to a subject in a specific session.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="AccessMethod">
+    <rdfs:comment xml:lang="en">One or more mechanisms (protocols and its identifiers) through which the resources (data) can be accessed.  Usually, it's a standard protocol, such as: MQTT, CoAP, http, etc.</rdfs:comment>
+    <rdfs:label xml:lang="en">Data access method</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#Observation">
+    <rdfs:label xml:lang="en">Observation</rdfs:label>
+    <rdfs:comment xml:lang="en">[URI = "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#Observation"]
+	An Observation is a Situation in which a Sensing method has been used to estimate 
+    or calculate a value of a Property of a FeatureOfInterest. Links 
+    to Sensing and Sensor describe what made the Observation and how; links to 
+    Property and Feature detail what was sensed; the result is the output of a 
+    Sensor; other metadata details times etc.</rdfs:comment>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="RecordedModality"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="Study"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#MeasurementProperty">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#Property"/>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="en">[URI = "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#MeasurementProperty"]
+An identifiable and observable characteristic of a sensor's observations or ability to make observations.</rdfs:comment>
+    <rdfs:label xml:lang="en">Measurement Property</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="AccessMethod.FTP">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="AccessMethod.MQTT"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="AccessMethod.HTTP"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="AccessMethod.CoAP"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#AccessMethod"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:hasValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >Archive</owl:hasValue>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="hasType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Place">
+  </owl:Class>
+  <owl:Class rdf:about="http://dbpedia.org/ontology/Person"/>
+  <owl:Class rdf:ID="VisualBciDevice">
+    <rdfs:label xml:lang="en">Visual BCI Device</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="BciDevice"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#AccessMethod.CoAP">
+    <owl:disjointWith rdf:resource="#AccessMethod.FTP"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#AccessMethod.MQTT"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#AccessMethod.HTTP"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#AccessMethod"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:hasValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >Archive</owl:hasValue>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="#hasType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Study">
+    <owl:disjointWith rdf:resource="#Place"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#Sensor"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Observation"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:ID="hasBciSession"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BciRecord"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BiomedicalResource"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasResource"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#RecordedModality"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BciSession"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Owner"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#Property"/>
+    </owl:disjointWith>
+    <rdfs:label xml:lang="en">A related collection of sessions. Reference: [ESS]</rdfs:label>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Subject"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="AudioBciRecord">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#BciRecord"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#Property">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BiomedicalResource"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Observation"/>
+    <owl:disjointWith rdf:resource="#Study"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BciSession"/>
+    </owl:disjointWith>
+    <rdfs:comment xml:lang="en">[URI = "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#Property"]
+An observable Quality of an Event or Object. That is, not a quality of an 
+    abstract entity as is also allowed by DUL's Quality, but rather an aspect 
+    of an entity that is intrinsic to and cannot exist without the entity and 
+    is observable by a sensor.</rdfs:comment>
+    <owl:disjointWith rdf:resource="#Place"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#Sensor"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Owner"/>
+    </owl:disjointWith>
+    <rdfs:label xml:lang="en">Property</rdfs:label>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#RecordedModality"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Subject"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BciRecord"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#MeasurementCapability">
+    <rdfs:comment xml:lang="en">[URI = "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#MeasurementCapability"]
+Collects together measurement properties (accuracy, range, precision, etc) and the 
+    environmental conditions in which those properties hold, representing a 
+    specification of a sensor's capability in those conditions. The conditions 
+    specified here are those that affect the measurement properties, while 
+    those in OperatingRange represent the sensor's standard operating 
+    conditions, including conditions that don't affect the observations.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Property"/>
+    <rdfs:label xml:lang="en">Measurement Capability</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="HED.Pain">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="HED.Stimulus"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="Investigator">
+    <rdfs:subClassOf rdf:resource="http://dbpedia.org/ontology/Person"/>
+  </owl:Class>
+  <owl:Class rdf:about="#BiomedicalResource">
+    <owl:disjointWith rdf:resource="#Place"/>
+    <owl:disjointWith rdf:resource="#Study"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Resource"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="isUsedFor"/>
+        </owl:onProperty>
+        <owl:hasValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >Raw data</owl:hasValue>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BciRecord"/>
+    </owl:disjointWith>
+    <rdfs:comment xml:lang="en">Biomedical resource (stream or file depending on its acces method).</rdfs:comment>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Subject"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#RecordedModality"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Property"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BciSession"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Owner"/>
+    </owl:disjointWith>
+    <rdfs:label xml:lang="en">Biomedical resource</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="isFromSubject"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Observation"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#Sensor"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="isBiomedicalResourceOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="HED.Taste">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#HED.Stimulus"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="EegBciRecord">
+    <rdfs:label xml:lang="en">EEG record</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#BciRecord"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#ObservationValue">
+    <rdfs:comment xml:lang="en">[URI = "http://purl.oclc.org/NET/ssnx/ssn#ObservationValue"]
+The value of the result of an Observation. An Observation has a result which 
+    is the output of some sensor, the result is an information object that 
+    encodes some value for a Feature.</rdfs:comment>
+    <rdfs:label xml:lang="en">Observation Value</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="MotionCaptureBciRecord">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#BciRecord"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#AccessMethod.HTTP">
+    <rdfs:subClassOf rdf:resource="#AccessMethod"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="#hasType"/>
+        </owl:onProperty>
+        <owl:hasValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >Archive</owl:hasValue>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#AccessMethod.FTP"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#AccessMethod.MQTT"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#AccessMethod.CoAP"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#Stimulus">
+    <rdfs:label xml:lang="en">Stimulus</rdfs:label>
+    <rdfs:comment xml:lang="en">
+    [URI = "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#Stimulus"]
+An Event in the real world that 'triggers' the sensor. The properties 
+        associated to the stimulus may be different to eventual observed 
+        property. It is the event, not the object that triggers the sensor.
+      </rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="RecordedParameterSet">
+    <rdfs:comment xml:lang="en">[ESS 2.0] Contains information about one set of recording data parameters (the recording data parameters correspond to "RecordedModality" nodes).
+Most studies have only a single parameter set, i.e. the same types of data (EEG, Mocap, etc.) are recorded in the same channel ranges, with the same device types and with the same sampling rates. In these cases only a single recordingParameterSet is to be defined.
+Otherwise multiple "RecordedParameterSet" nodes should be defined and associated with "dataRecording" nodes (BciRecord).
+
+This class just groups multiple "RecordedModality" nodes.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="MotionCaptureBciDevice">
+    <rdfs:label xml:lang="en">Motion Capture BCI Device</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#BciDevice"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#BciMeasurementProperty">
+    <rdfs:comment xml:lang="en"></rdfs:comment>
+    <rdfs:label xml:lang="en">BCI Measurement Property</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#MeasurementProperty"/>
+    
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#Sensor">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Owner"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#RecordedModality"/>
+    </owl:disjointWith>
+    <rdfs:label xml:lang="en">Sensor</rdfs:label>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BciRecord"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Observation"/>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Property"/>
+    <owl:disjointWith rdf:resource="#Place"/>
+    <owl:disjointWith rdf:resource="#BiomedicalResource"/>
+    <rdfs:comment xml:lang="en">[URI = "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#Sensor"]
+A sensor can do (implements) sensing: that is, a sensor is any entity that 
+    can follow a sensing method and thus observe some Property of a 
+    FeatureOfInterest. Sensors may be physical devices, computational methods, 
+    a laboratory setup with a person following a method, or any other thing 
+    that can follow a Sensing Method to observe a Property.</rdfs:comment>
+    <owl:disjointWith rdf:resource="#Study"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BciSession"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Subject"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#HED.Stimulus">
+    <rdfs:subClassOf rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Stimulus"/>
+    <rdfs:comment xml:lang="en">
+      Hierarchical Event Descriptor (HED) Tags for Analysis of Event-Related EEG Studies.
+    </rdfs:comment>
+    <rdfs:label xml:lang="en">Hierarchical Event Descriptor (HED) Tags for Analysis of Event-Related EEG Studies</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#BciSession">
+    <owl:disjointWith rdf:resource="#Place"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#RecordedModality"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Observation"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BciRecord"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Sensor"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Subject"/>
+    </owl:disjointWith>
+    <rdfs:label xml:lang="en">BCI Session</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Observation"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Owner"/>
+    </owl:disjointWith>
+    <rdfs:comment xml:lang="en">A BCI session is a type of ssn:Observation:
+      - It's a Situation for BCI purposes.
+      - A Sensing method it's used to estimate or calculate a value of different Property.
+
+      [Definition]: a collection of multi-modal biomedical data files recorded from a certain Subject in a specific Event.</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasResource"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Property"/>
+    <owl:disjointWith rdf:resource="#Study"/>
+    <owl:disjointWith rdf:resource="#BiomedicalResource"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:ID="hasBciRecord"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Owner">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Subject"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#Place"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BciRecord"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#BiomedicalResource"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#RecordedModality"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Property"/>
+    <owl:disjointWith rdf:resource="#Study"/>
+    <owl:disjointWith rdf:resource="#BciSession"/>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Sensor"/>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Observation"/>
+  </owl:Class>
+  <owl:Class rdf:about="#BciRecord">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#RecordedModality"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Property"/>
+    <owl:disjointWith rdf:resource="#BiomedicalResource"/>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Sensor"/>
+    <owl:disjointWith rdf:resource="#BciSession"/>
+    <rdfs:comment xml:lang="en">[ESS 1.0] Corresponds to the "eegRecordings" node: a specific collection of raw BCI data collected from a subject in a specific session.
+[ESS 2.0] Corresponds to the "dataRecordings" node: information about EEG (or other data) recordings.</rdfs:comment>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Subject"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#Study"/>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Observation"/>
+    <rdfs:label xml:lang="en">BCI Record</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#ObservationValue"/>
+    <owl:disjointWith rdf:resource="#Owner"/>
+    <owl:disjointWith rdf:resource="#Place"/>
+  </owl:Class>
+  <owl:Class rdf:ID="EegBciDevice">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#BciDevice"/>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en">EEG BCI Device</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#AccessMethod.MQTT">
+    <rdfs:comment xml:lang="en">Defines the parameters needed for a suitable MQTT access method.</rdfs:comment>
+    <owl:disjointWith rdf:resource="#AccessMethod.FTP"/>
+    <owl:disjointWith rdf:resource="#AccessMethod.HTTP"/>
+    <owl:disjointWith rdf:resource="#AccessMethod.CoAP"/>
+    <rdfs:subClassOf rdf:resource="#AccessMethod"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:hasValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >Real-time</owl:hasValue>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="#hasType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en">Message Queuing Telemetry Transport (MQTT)</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="HED.Visual">
+    <rdfs:subClassOf rdf:resource="#HED.Stimulus"/>
+  </owl:Class>
+  <owl:Class rdf:about="#BciDevice">
+    <rdfs:comment xml:lang="en"></rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#SensingDevice"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasAccessMethod"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://purl.oclc.org/NET/ssnx/ssn#hasMeasurementCapability"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en">BCI Device</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="Channel">
+    <rdfs:comment xml:lang="en">@XDF: Channeling scheme information for a [ Biomedical Record (EEG) ].</rdfs:comment>
+    <rdfs:label xml:lang="en">Channel</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="HED.Auditory">
+    <rdfs:subClassOf rdf:resource="#HED.Stimulus"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Resource">
+    <rdfs:label xml:lang="en">BCI Resource</rdfs:label>
+    <rdfs:comment xml:lang="en">The abstract representation of a "File" (archived access method) or a "Stream" (real-time access method).</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="HED.Smell">
+    <rdfs:subClassOf rdf:resource="#HED.Stimulus"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#Condition">
+    <rdfs:label xml:lang="en">Condition</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Property"/>
+    <rdfs:comment xml:lang="en">[URI = "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#Condition"]
+Used to specify ranges for qualities that act as conditions on a 
+    system/sensor's operation. For example, wind speed of 10-60m/s is 
+    expressed as a condition linking a quality, wind speed, a unit of 
+    measurement, metres per second, and a set of values, 10-60, and may be 
+    used as the condition on a MeasurementProperty, for example, to state that 
+    a sensor has a particular accuracy in that condition.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="AudioBciDevice">
+    <rdfs:subClassOf rdf:resource="#BciDevice"/>
+    <rdfs:label xml:lang="en">Audio BCI Device</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="HED.TMS">
+    <rdfs:subClassOf rdf:resource="#HED.Stimulus"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#SensingDevice">
+    <rdfs:label xml:lang="en">Sensing Device</rdfs:label>
+    <rdfs:comment xml:lang="en">[URI = "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#Sensor"]
+A sensor can do (implements) sensing: that is, a sensor is any entity that 
+    can follow a sensing method and thus observe some Property of a 
+    FeatureOfInterest. Sensors may be physical devices, computational methods, 
+    a laboratory setup with a person following a method, or any other thing 
+    that can follow a Sensing Method to observe a Property.
+	
+[URI = "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#Device"]
+A device is a physical piece of technology - a system in a box. Devices may 
+    of course be built of smaller devices and software components (i.e. 
+    systems have component).
+	
+	[URI = "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#SensingDevice"]
+A sensing device is a device that implements sensing.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Sensor"/>
+  </owl:Class>
+  <owl:Class rdf:about="#RecordedModality">
+    <owl:disjointWith rdf:resource="#BiomedicalResource"/>
+    <owl:disjointWith rdf:resource="#BciRecord"/>
+    <owl:disjointWith rdf:resource="#Owner"/>
+    <owl:disjointWith rdf:resource="#Place"/>
+    <owl:disjointWith rdf:resource="#BciSession"/>
+    <owl:disjointWith rdf:resource="#Study"/>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Sensor"/>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Observation"/>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Property"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Subject"/>
+    </owl:disjointWith>
+    <rdfs:comment xml:lang="en">[ESS 1.0] Contains information on the different type of modalities recorded in the study.
+[ESS 2.0] Contains information about a set of recording data parameters (which can apply to multiple BCI Records). Most studies have only a single "RecordedModality" set, i.e. the same types of data (EEG, Mocap, etc.) are recorded in the same channel ranges, with the same device types and with the same sampling rates. These "recordings parameter set" are associated with BCI Records nodes (which represent the "dataRecording" nodes).</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="VideoBciRecord">
+    <rdfs:subClassOf rdf:resource="#BciRecord"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Subject">
+    <rdfs:subClassOf rdf:resource="http://dbpedia.org/ontology/Person"/>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Sensor"/>
+    <rdfs:comment xml:lang="en">A specific person (probably anonymous but possessing unique identity) with certain attributes on which the sessions are recorded. Same concept as "Patient".</rdfs:comment>
+    <rdfs:label xml:lang="en">Subject</rdfs:label>
+    <owl:disjointWith rdf:resource="#RecordedModality"/>
+    <owl:disjointWith rdf:resource="#Owner"/>
+    <owl:disjointWith rdf:resource="#BiomedicalResource"/>
+    <owl:disjointWith rdf:resource="#BciSession"/>
+    <owl:disjointWith rdf:resource="#Study"/>
+    <owl:disjointWith rdf:resource="#BciRecord"/>
+    <owl:disjointWith rdf:resource="#Place"/>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Observation"/>
+    <owl:disjointWith rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Property"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="hasYearOfBirth"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1900</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="HED.Tactile">
+    <rdfs:subClassOf rdf:resource="#HED.Stimulus"/>
+  </owl:Class>
+  <owl:ObjectProperty rdf:ID="isResourceOf">
+    <rdfs:range>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BciRecord"/>
+          <owl:Class rdf:about="#Study"/>
+          <owl:Class rdf:about="http://purl.oclc.org/NET/ssnx/ssn#Observation"/>
+          <owl:Class rdf:about="#BiomedicalResource"/>
+          <owl:Class rdf:about="#BciDevice"/>
+          <owl:Class rdf:about="#Owner"/>
+          <owl:Class rdf:about="#Place"/>
+          <owl:Class rdf:about="#Subject"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+    <rdfs:domain rdf:resource="#Resource"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#hasResource"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://purl.oclc.org/NET/ssnx/ssn#hasMeasurementCapability">
+    <rdfs:range rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#MeasurementCapability"/>
+    <rdfs:label xml:lang="en">hasMeasurementCapability</rdfs:label>
+    <rdfs:subPropertyOf>
+      <rdf:Property rdf:about="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </rdfs:subPropertyOf>
+    <rdfs:domain rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#Sensor"/>
+    <rdfs:comment xml:lang="en">
+        Relation from a Sensor to a MeasurementCapability describing the measurement properties of the sensor.
+      </rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasRecordedModality">
+    <rdfs:range rdf:resource="#RecordedModality"/>
+    <rdfs:comment xml:lang="en">[ESS 1.0] A BciRecord has a specific (single) defined RecordedModality.
+[ESS 2.0] A BciRecord has a specific defined RecordedParameterSet, which groups various (multiple) RecordedModality. Therefore, a BciRecord can be associated with multiple RecordedModality definitions.
+We keep this Object Property for faster graph traversal in queries.</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BciRecord"/>
+          <owl:Class rdf:about="#RecordedParameterSet"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="isUsedForGenerateMotionCaptureBciRecord">
+    <rdfs:domain rdf:resource="#MotionCaptureBciDevice"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="isUsedForGenerateBciRecord"/>
+    </rdfs:subPropertyOf>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="isGeneratedByMotionCaptureBciDevice"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#MotionCaptureBciRecord"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="isGeneratedByAudioBciDevice">
+    <rdfs:domain rdf:resource="#AudioBciRecord"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="isUsedForGenerateAudioBciRecord"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#AudioBciDevice"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="isGeneratedByBciDevice"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://purl.oclc.org/NET/ssnx/ssn#hasMeasurementProperty">
+    <rdfs:comment xml:lang="en">
+        Relation from a MeasurementCapability to a MeasurementProperty. For 
+        example, to an accuracy (see notes at MeasurementCapability).
+      </rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#MeasurementCapability"/>
+    <rdfs:label xml:lang="en">hasMeasurementProperty</rdfs:label>
+    <rdfs:range rdf:resource="http://purl.oclc.org/NET/ssnx/ssn#MeasurementProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isGeneratedByBciDevice">
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#isUsedForGenerateBciRecord"/>
+    </owl:inverseOf>
+    <rdfs:domain rdf:resource="#BciRecord"/>
+    <rdfs:comment xml:lang="en">The device used.</rdfs:comment>
+    <rdfs:range rdf:resource="#BciDevice"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasOwner">
+    <rdfs:range rdf:resource="#Owner"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Study"/>
+          <owl:Class rdf:about="#Resource"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasRecordedParameterSet">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="#RecordedParameterSet"/>
+    <rdfs:comment xml:lang="en">[ESS 2.0] A BciRecord has a RecordedParameterSet.
+This is found in
+  &lt;recordingParameterSetLabel&gt; tag of &lt;recordingParameterSet&gt;</rdfs:comment>
+    <rdfs:domain rdf:resource="#BciRecord"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isGeneratedByMotionCaptureBciDevice">
+    <rdfs:domain rdf:resource="#MotionCaptureBciRecord"/>
+    <rdfs:subPropertyOf rdf:resource="#isGeneratedByBciDevice"/>
+    <owl:inverseOf rdf:resource="#isUsedForGenerateMotionCaptureBciRecord"/>
+    <rdfs:range rdf:resource="#MotionCaptureBciDevice"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasResource">
+    <rdfs:range rdf:resource="#Resource"/>
+    <owl:inverseOf rdf:resource="#isResourceOf"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BciRecord"/>
+          <owl:Class rdf:about="#Study"/>
+          <owl:Class rdf:about="#BciDevice"/>
+          <owl:Class rdf:about="#Owner"/>
+          <owl:Class rdf:about="#Place"/>
+          <owl:Class rdf:about="#Subject"/>
+          <owl:Class rdf:about="#BciSession"/>
+          <owl:Class rdf:about="#RecordedSubjectAtSession"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasRecordedSpecsSubjectSession">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BciSession"/>
+          <owl:Class rdf:about="#Subject"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment xml:lang="en">The specifications of how a subject was recorded in a session.</rdfs:comment>
+    <rdfs:range rdf:resource="#RecordedSubjectAtSession"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasChannelData">
+    <rdfs:comment xml:lang="en">@XDF: The channeling information related to a specific EEG record.</rdfs:comment>
+    <rdfs:range rdf:resource="#Channel"/>
+    <rdfs:domain rdf:resource="#EegBciRecord"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="isChannelDataOf"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasAccessMethod">
+    <rdfs:label xml:lang="en">Data access method</rdfs:label>
+    <rdfs:comment xml:lang="en">One or more mechanisms (protocols and identifiers) through which the data can be accessed.
+Usually, it's a standard protocol, such as: MQTT, CoAP, http, etc.</rdfs:comment>
+    <rdfs:range rdf:resource="#AccessMethod"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Resource"/>
+          <owl:Class rdf:about="#BciDevice"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="isGeneratedByVisualBciDevice">
+    <rdfs:subPropertyOf rdf:resource="#isGeneratedByBciDevice"/>
+    <rdfs:domain rdf:resource="#VideoBciRecord"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="isUsedForGenerateVideoBciRecord"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#VisualBciDevice"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="isUsedForGenerateEegBciRecord">
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="isGeneratedByEegBciDevice"/>
+    </owl:inverseOf>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#isUsedForGenerateBciRecord"/>
+    </rdfs:subPropertyOf>
+    <rdfs:domain rdf:resource="#EegBciDevice"/>
+    <rdfs:range rdf:resource="#EegBciRecord"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isChannelDataOf">
+    <rdfs:range rdf:resource="#EegBciRecord"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#Channel"/>
+    <owl:inverseOf rdf:resource="#hasChannelData"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="isRelatedToResource">
+    <rdfs:range rdf:resource="#Resource"/>
+    <rdfs:domain rdf:resource="#BiomedicalResource"/>
+    <rdfs:comment xml:lang="en">It states that [this entity] is logically related to multiple Resources (of diverse type).</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="specifiesBciDevice">
+    <rdfs:comment xml:lang="en">[ESS 2.0] The "recordingParameterSet" node groups the information of multiple "modalities" and, also, "device" specs. Therefore, it implicitly defines that a "BciRecord" is generated by multiple "BciDevices", due of the "dataRecording" node definition in ESS.</rdfs:comment>
+    <rdfs:domain rdf:resource="#RecordedParameterSet"/>
+    <rdfs:range rdf:resource="#BciDevice"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isUsedForGenerateBciRecord">
+    <owl:inverseOf rdf:resource="#isGeneratedByBciDevice"/>
+    <rdfs:domain rdf:resource="#BciDevice"/>
+    <rdfs:range rdf:resource="#BciRecord"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isUsedForGenerateAudioBciRecord">
+    <rdfs:domain rdf:resource="#AudioBciDevice"/>
+    <rdfs:range rdf:resource="#AudioBciRecord"/>
+    <rdfs:subPropertyOf rdf:resource="#isUsedForGenerateBciRecord"/>
+    <owl:inverseOf rdf:resource="#isGeneratedByAudioBciDevice"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isGeneratedByEegBciDevice">
+    <owl:inverseOf rdf:resource="#isUsedForGenerateEegBciRecord"/>
+    <rdfs:range rdf:resource="#EegBciDevice"/>
+    <rdfs:subPropertyOf rdf:resource="#isGeneratedByBciDevice"/>
+    <rdfs:domain rdf:resource="#EegBciRecord"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isUsedForGenerateVideoBciRecord">
+    <rdfs:range rdf:resource="#VideoBciRecord"/>
+    <rdfs:domain rdf:resource="#VisualBciDevice"/>
+    <owl:inverseOf rdf:resource="#isGeneratedByVisualBciDevice"/>
+    <rdfs:subPropertyOf rdf:resource="#isUsedForGenerateBciRecord"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:ID="hasReference.Label">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#EegBciRecord"/>
+          <owl:Class rdf:about="#RecordedModality"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:comment xml:lang="en">@XDF: [Signal referencing scheme]
+Name of the dedicated reference channel(s), if part of the measured channels (repeated if multiple).
+
+[ESS 2.0] Labels of the reference channel or channels used during EEG or ECG recording. For example, if using 10-20 system and numerical average of both mastoids, use "A1, A2" for {referenceLabel} and "Mastoids" for {referenceLocation}. Note that there could be multiple labels.</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasHardware.Coupling">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:comment xml:lang="en">Type of coupling used: Gel, Saline, Dry, Capacitive.</rdfs:comment>
+    <rdfs:domain rdf:resource="#EegBciRecord"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Gel</rdf:first>
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:rest rdf:parseType="Resource">
+                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Capacitive</rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+              </rdf:rest>
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >Dry</rdf:first>
+            </rdf:rest>
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Saline</rdf:first>
+          </rdf:rest>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasSecurity">
+    <rdfs:domain rdf:resource="#AccessMethod"/>
+    <rdfs:comment xml:lang="en">The [ security ] of the "Access Method".</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasSessionLabID">
+    <rdfs:domain rdf:resource="#BciSession"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:comment xml:lang="en">Identifier of session used in original lab notes (if available, otherwise insert 'NA').
+Reference: [ESS]</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasHardware.Surface">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:comment xml:lang="en">
+      Type of the contact surface (e.g., Plate, Pins, Bristle, Pad)</rdfs:comment>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Plate</rdf:first>
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >Bristle</rdf:first>
+              <rdf:rest rdf:parseType="Resource">
+                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Pad</rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+              </rdf:rest>
+            </rdf:rest>
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Pins</rdf:first>
+          </rdf:rest>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+    <rdfs:domain rdf:resource="#EegBciRecord"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasMedicationAlcohol">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:comment xml:lang="en">Whether the subject has consumed alcohol within 24 hours before the recording (True=Yes or False=No).</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#RecordedSubjectAtSession"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasEndChannel">
+    <rdfs:comment xml:lang="en">The channel number in the recording where the modality block ends.</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#RecordedModality"/>
+          <owl:Class rdf:about="#BciMeasurementProperty"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/Person/height">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">height (cm)</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasIdNumber">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BciSession"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment xml:lang="en">Number that identifies individual entity.
+Session (e.g. 1, 2, ..); Event-code (specific event code).</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasTimeStamp">
+    <rdfs:comment xml:lang="en">
+      XSD DateTime of a specific INSTANT  (Time Ontology in OWL).
+ Definition: http://www.w3.org/TR/xmlschema11-2/#dateTime </rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Channel"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/waistSize">
+    <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasBroker">
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#AccessMethod.MQTT"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasPurpose">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:comment xml:lang="en">Purpose of the entity. In the specific case for a session: training, testing, etc.</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Study"/>
+          <owl:Class rdf:about="#BciRecord"/>
+          <owl:Class rdf:about="#BciSession"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasHardware.Model">
+    <rdfs:domain rdf:resource="#BciDevice"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:comment xml:lang="en">@XDF: "model of the sensor"</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/eyeColor">
+    <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/hipSize">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasTopic">
+    <rdfs:domain rdf:resource="#AccessMethod.MQTT"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasChannelLabel">
+    <rdfs:comment xml:lang="en">@XDF: channel label, according to labeling scheme; the preferred 
+      labeling scheme for EEG is 10-20 (or the finer-grained 10-5).
+
+[ESS 2.0] A comma separated list of labels corresponding channels. This node is required for EEG modality.</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Channel"/>
+          <owl:Class rdf:about="#RecordedModality"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/handedness">
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/birthDate">
+    <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/bloodGroup">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasNatureOfBiomedicalData">
+    <rdfs:domain rdf:resource="#BiomedicalResource"/>
+    <rdfs:comment xml:lang="en">Nature of the raw biomedical data.</rdfs:comment>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >ECG</rdf:first>
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >EMG</rdf:first>
+              <rdf:rest rdf:parseType="Resource">
+                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >EOG</rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+              </rdf:rest>
+            </rdf:rest>
+          </rdf:rest>
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >EEG</rdf:first>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasFacilityType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#Facility"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Lab</rdf:first>
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Center</rdf:first>
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >Institute</rdf:first>
+            </rdf:rest>
+          </rdf:rest>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+    <rdfs:comment xml:lang="en">Lab, center, institute, etc.</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="#hasType">
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Archive</rdf:first>
+          </rdf:rest>
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Real-time</rdf:first>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+    <rdfs:comment xml:lang="en">Indicates the access type: how the resource can be accessed.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#AccessMethod"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasLocation.Z">
+    <rdfs:domain rdf:resource="#Channel"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:comment xml:lang="en">@XDF:
+    
+      [ Measured location (note: this may be arbitrary but should then include 
+      well-known fiducials (landmarks) for co-registration) ]
+    
+    
+      Coordinate axis pointing from the center of the head to the top, in millimeters.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/Person/weight">
+    <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:label xml:lang="en">weight (kg)</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasHardware.Manufacturer">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BciDevice"/>
+          <owl:Class rdf:about="#RecordedModality"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment xml:lang="en">@XDF: "manufacturer of the sensor".
+[ESS 1.0] Corresponds to the (/study/summary/recordedModalities/modality/recordingDevice) node definition - name or type of recording device used to acquire data (manufacturer name).
+[ESS 2.0] Corresponds to the (/study/recordingParameterSets/recordingParameterSet/channelType/modality/name) node definition - The name (brand) of the sensor device e.g. BioSemi, OptiTrack, SMI...</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasRootURI">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:comment xml:lang="en">[ESS 2.0] The URI pointing to the root folder of associated ESS folder. 
+If the ESS file is located in the default root folder, this should be "." (current directory).
+If for example the data files and the root folder are placed on a remote FTP location, {rootURI} should be set to "ftp://domain.com/study".
+The concatenation or {rootURI} and {filename} for each file should always produce a valid, downloadable URI.</rdfs:comment>
+    <rdfs:domain rdf:resource="#Study"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasReference.isSubtracted">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="#EegBciRecord"/>
+    <rdfs:comment xml:lang="en">@XDF: [Signal referencing scheme]
+    Yes if a reference signal has already been subtracted from the data, otherwise No.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasLocator">
+    <rdfs:domain rdf:resource="#AccessMethod"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    <rdfs:comment xml:lang="en">The [ locator ] of the "Access Method".</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasModalitySignalType">
+    <rdfs:comment xml:lang="en">[ESS 2.0] The signal type: EEG (for Electroencephalogram), MoCap (for Motion Capture), Gaze (for gaze / eye tracking) parameters.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#RecordedModality"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >ECG</rdf:first>
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:rest rdf:parseType="Resource">
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Gaze</rdf:first>
+              </rdf:rest>
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >MoCap</rdf:first>
+            </rdf:rest>
+          </rdf:rest>
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >EEG</rdf:first>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/bustSize">
+    <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasChannelLocationType">
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >10-10</rdf:first>
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >10-5</rdf:first>
+              <rdf:rest rdf:parseType="Resource">
+                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >EGI</rdf:first>
+                <rdf:rest rdf:parseType="Resource">
+                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                  >Custom</rdf:first>
+                </rdf:rest>
+              </rdf:rest>
+            </rdf:rest>
+          </rdf:rest>
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >10-20</rdf:first>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+    <rdfs:comment xml:lang="en">Channel location type/standard used (one of the following: 10-20, 10-10, 10-5, EGI, custom).</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#RecordedSubjectAtSession"/>
+          <owl:Class rdf:about="#RecordedModality"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/hairColor">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasTaskLabel">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BciSession"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:comment xml:lang="en">Indicates which task is being performed in the session (e.g. A, B, C,...).
+Only use this node if there are different tasks. Otherwise leave the node blank.
+
+FOR Session entities:
+      If different tasks occur in the same session repeat the session node with a different "taskLabel", and other information that may be different, such as the "eegRecording" node.
+</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasLabID">
+    <rdfs:domain rdf:resource="#RecordedSubjectAtSession"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:comment xml:lang="en">De-personalized subject identifier (if available, otherwise insert 'N/A').</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasHardware.Material">
+    <rdfs:domain rdf:resource="#BciDevice"/>
+    <rdfs:comment xml:lang="en">@XDF: "Conductive material of the sensor (e.g. Ag-AgCl, Rubber, Foam, Plastic)"</rdfs:comment>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Ag-AgCl</rdf:first>
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Rubber</rdf:first>
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >Foam</rdf:first>
+              <rdf:rest rdf:parseType="Resource">
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Plastic</rdf:first>
+              </rdf:rest>
+            </rdf:rest>
+          </rdf:rest>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasLocation.Y">
+    <rdfs:comment xml:lang="en">@XDF:
+    
+      [ Measured location (note: this may be arbitrary but should then include 
+      well-known fiducials (landmarks) for co-registration) ]
+    
+      Coordinate axis pointing from the center of the head to the front, in millimeters.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#Channel"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasMedicationCaffeine">
+    <rdfs:comment xml:lang="en">Hours since last caffeine intake, if less than 12 hours.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#RecordedSubjectAtSession"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/bloodType">
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasUnit">
+    <rdfs:comment xml:lang="en">Measurement unit (strongly preferred unit: microvolts).</rdfs:comment>
+    <rdfs:domain rdf:resource="#EegBciRecord"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasStartChannel">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#RecordedModality"/>
+          <owl:Class rdf:about="#BciMeasurementProperty"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:comment xml:lang="en">The channel number in the recording where the modality block starts.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasUUID">
+    <rdfs:domain rdf:resource="#Study"/>
+    <rdfs:comment xml:lang="en">[ESS 2.0] A unique identifier (uuid) with 32 random alphanumeric characters and four hyphens. It is used to uniquely identify each ESS document.</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasQoS">
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#AccessMethod"/>
+    <rdfs:comment xml:lang="en">The [ QoS ] of the "Access Method".</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasReference.isCommonAverage">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:comment xml:lang="en">@XDF: [Signal referencing scheme]
+    Yes if the subtracted reference signal was a common average, otherwise No.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#EegBciRecord"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasCountry">
+    <rdfs:comment xml:lang="en">Country of the place. The country codification is based on the ISO 3166-1 alpha-2 codes (ref: http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#Place"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >TW</rdf:first>
+            <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+          </rdf:rest>
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >US</rdf:first>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasIdentity">
+    <rdfs:comment xml:lang="en">The [ identity ] of the "Access Method".</rdfs:comment>
+    <rdfs:domain rdf:resource="#AccessMethod"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasLocation.X">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:comment xml:lang="en">@XDF:
+    
+      [ Measured location (note: this may be arbitrary but should then include 
+      well-known fiducials (landmarks) for co-registration) ]
+    
+    Coordinate axis pointing from the center of the head to the right, in millimeters.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#Channel"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/sex">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasSessionGroup">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:comment xml:lang="en">Type of subject group the subject belongs to (e.g. autistic, normal, control...)</rdfs:comment>
+    <rdfs:domain rdf:resource="#RecordedSubjectAtSession"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >CONTROL</rdf:first>
+              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:rest>
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >NORMAL</rdf:first>
+          </rdf:rest>
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >AUTISTIC</rdf:first>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+  </owl:DatatypeProperty>
+  <owl:FunctionalProperty rdf:ID="isBciSessionOf">
+    <rdfs:domain rdf:resource="#BciSession"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#Study"/>
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:about="#hasBciSession"/>
+    </owl:inverseOf>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasGender">
+    <rdfs:domain rdf:resource="#Subject"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Male</rdf:first>
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Female</rdf:first>
+          </rdf:rest>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+    <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/sex"/>
+    <rdfs:comment xml:lang="en">Subject's gender.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#isBiomedicalResourceOf">
+    <rdfs:domain rdf:resource="#BiomedicalResource"/>
+    <rdfs:range rdf:resource="#BciRecord"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:ID="hasBiomedicalResource"/>
+    </owl:inverseOf>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasYearOfBirth">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:comment xml:lang="en">Subject's year of birth only.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="#Subject"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasHandedness">
+    <rdfs:domain rdf:resource="#Subject"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/handedness"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:rest rdf:parseType="Resource">
+                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >N/A</rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+              </rdf:rest>
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >Ambidextrous</rdf:first>
+            </rdf:rest>
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Left</rdf:first>
+          </rdf:rest>
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Right</rdf:first>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+    <rdfs:comment xml:lang="en">Subject's dominantly used hand.</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasOrganizationName">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BciDevice"/>
+          <owl:Class rdf:about="#Owner"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasHearing">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Subject"/>
+          <owl:Class rdf:about="#RecordedSubjectAtSession"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment xml:lang="en">Subject's hearing.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >CorrectedToNormal</rdf:first>
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >Impaired</rdf:first>
+              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:rest>
+          </rdf:rest>
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Normal</rdf:first>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasWeight">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="#RecordedSubjectAtSession"/>
+    <rdfs:comment xml:lang="en">Subject's weight in kilograms (at the moment of the session). If not available, the default value would be the correspondant datatype property in "Subject".</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasName">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Place"/>
+          <owl:Class rdf:about="#Owner"/>
+          <owl:Class rdf:about="#Investigator"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:comment xml:lang="en">The name of the [entity].</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="isSequentiallyLinkedTo">
+    <rdfs:domain rdf:resource="#BiomedicalResource"/>
+    <rdfs:range rdf:resource="#BiomedicalResource"/>
+    <rdfs:comment xml:lang="en">A Biomedical resource (example: a *.bdf file) is sequentially linked to another Biomedical resource.  All the linked biomedical resources compose a BCI Record.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="isBciRecordOf">
+    <rdfs:range rdf:resource="#BciSession"/>
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:about="#hasBciRecord"/>
+    </owl:inverseOf>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="#BciRecord"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasURL">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#AccessMethod.HTTP"/>
+          <owl:Class rdf:about="#AccessMethod.FTP"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment xml:lang="en">The URI locator.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    <rdfs:subPropertyOf rdf:resource="#hasLocator"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#isUsedFor">
+    <rdfs:comment xml:lang="en">Practical usage of the resource.  The resource is use as a...</rdfs:comment>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >Annotation</rdf:first>
+              <rdf:rest rdf:parseType="Resource">
+                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Raw data</rdf:first>
+                <rdf:rest rdf:parseType="Resource">
+                  <rdf:rest rdf:parseType="Resource">
+                    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >Event instance</rdf:first>
+                    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                  </rdf:rest>
+                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                  >Channel locations</rdf:first>
+                </rdf:rest>
+              </rdf:rest>
+            </rdf:rest>
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Descriptive metadata</rdf:first>
+          </rdf:rest>
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Experiment note</rdf:first>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+    <rdfs:domain rdf:resource="#Resource"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasModalityType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:comment xml:lang="en">[ESS 1.0] Corresponds to the (/study/summary/recordedModalities/modality/name) node definition - name of a specific modality recorded in the study.</rdfs:comment>
+    <rdfs:domain rdf:resource="#RecordedModality"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Motion Capture</rdf:first>
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >Video</rdf:first>
+              <rdf:rest rdf:parseType="Resource">
+                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >EEG</rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+              </rdf:rest>
+            </rdf:rest>
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Audio</rdf:first>
+          </rdf:rest>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasInSessionNumber">
+    <rdfs:domain rdf:resource="#RecordedSubjectAtSession"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:comment xml:lang="en">[ESS 2.0] Each study may have multiple subjects. These subjects may or may not have labIds, but they are numbered for the sole purpose of distinction, arbitrarily and in the context of the session.
+For example session 1 will have subjects with inSession numbers 1 and 2, while session 2 may also have subjects with InSession numbers 1 and 2 but they may refer to two other subjects.
+This numbering is only to allow association between files and subjects in potential absence of subject labIds.</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasStartTime">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdfs:comment xml:lang="en">XSD DateTime of a specific starting-point of an INTERVAL (Time Ontology in OWL).
+Definition: http://www.w3.org/TR/xmlschema11-2/#dateTime </rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Study"/>
+          <owl:Class rdf:about="#BciRecord"/>
+          <owl:Class rdf:about="#Resource"/>
+          <owl:Class rdf:about="#BciSession"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasNumberOfUsedLEDs">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:domain rdf:resource="#RecordedModality"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasID">
+    <rdfs:domain rdf:resource="#AccessMethod.MQTT"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:comment xml:lang="en">An string ID for an [entity].</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#isFromSubject">
+    <rdfs:comment xml:lang="en">Information about the subject.</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BiomedicalResource"/>
+          <owl:Class rdf:about="#BciRecord"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#Subject"/>
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:ID="hasDataSet"/>
+    </owl:inverseOf>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasSamplingRate">
+    <rdfs:comment xml:lang="en">Sampling rate of EEG recording (Hz).</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BciMeasurementProperty"/>
+          <owl:Class rdf:about="#RecordedModality"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasNumberOfChannels">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:comment xml:lang="en">Number of data channels.  In the case of "(EEG) BCI Record": of the used number of channels.</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BciMeasurementProperty"/>
+          <owl:Class rdf:about="#EegBciRecord"/>
+          <owl:Class rdf:about="#RecordedModality"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasHeight">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="#RecordedSubjectAtSession"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:comment xml:lang="en">Subject's height in centimeters (at the moment of the session). If not available, the default value would be the correspondant datatype property in "Subject".</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasVision">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Subject"/>
+          <owl:Class rdf:about="#RecordedSubjectAtSession"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >CorrectedToNormal</rdf:first>
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >Impaired</rdf:first>
+            </rdf:rest>
+          </rdf:rest>
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Normal</rdf:first>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:comment xml:lang="en">Subject's vision</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasMIME-type">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >text/xml</rdf:first>
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >text/plain</rdf:first>
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:rest rdf:parseType="Resource">
+                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >text/csv</rdf:first>
+                <rdf:rest rdf:parseType="Resource">
+                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                  >application/pdf</rdf:first>
+                  <rdf:rest rdf:parseType="Resource">
+                    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >application/atom+xml</rdf:first>
+                    <rdf:rest rdf:parseType="Resource">
+                      <rdf:rest rdf:parseType="Resource">
+                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >application/xhtml+xml</rdf:first>
+                        <rdf:rest rdf:parseType="Resource">
+                          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                          >application/xml</rdf:first>
+                          <rdf:rest rdf:parseType="Resource">
+                            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >application/rss+xml</rdf:first>
+                            <rdf:rest rdf:parseType="Resource">
+                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                              >application/rdf+xml</rdf:first>
+                            </rdf:rest>
+                          </rdf:rest>
+                        </rdf:rest>
+                      </rdf:rest>
+                      <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                      >application/json</rdf:first>
+                    </rdf:rest>
+                  </rdf:rest>
+                </rdf:rest>
+              </rdf:rest>
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >text/html</rdf:first>
+            </rdf:rest>
+          </rdf:rest>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+    <rdfs:comment xml:lang="en">MIME type of the file.
+Reference: https://en.wikipedia.org/wiki/Internet_media_type</rdfs:comment>
+    <rdfs:domain rdf:resource="#Resource"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasAge">
+    <rdfs:domain rdf:resource="#RecordedSubjectAtSession"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:comment xml:lang="en">Subject's age (in years) at the time of recording.</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasEndTime">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Study"/>
+          <owl:Class rdf:about="#BciRecord"/>
+          <owl:Class rdf:about="#Resource"/>
+          <owl:Class rdf:about="#BciSession"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:comment xml:lang="en">XSD DateTime of a specific end-point of an INTERVAL (Time Ontology in OWL).
+ Definition: http://www.w3.org/TR/xmlschema11-2/#dateTime </rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://www.loa-cnr.it/ontologies/DUL.owl#hasLocation">
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    <rdfs:domain rdf:resource="#BciSession"/>
+    <rdfs:range rdf:resource="#Place"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasReference.Location">
+    <rdfs:domain rdf:resource="#RecordedModality"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Left Mastoid</rdf:first>
+            <rdf:rest rdf:parseType="Resource">
+              <rdf:rest rdf:parseType="Resource">
+                <rdf:rest rdf:parseType="Resource">
+                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                  >Cz</rdf:first>
+                  <rdf:rest rdf:parseType="Resource">
+                    <rdf:rest rdf:parseType="Resource">
+                      <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                      >Left Ear</rdf:first>
+                      <rdf:rest rdf:parseType="Resource">
+                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >Right Ear</rdf:first>
+                        <rdf:rest rdf:parseType="Resource">
+                          <rdf:rest rdf:parseType="Resource">
+                            <rdf:rest rdf:parseType="Resource">
+                              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                              >Nasion</rdf:first>
+                              <rdf:rest rdf:parseType="Resource">
+                                <rdf:rest rdf:parseType="Resource">
+                                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                  >WCT</rdf:first>
+                                </rdf:rest>
+                                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >Nose</rdf:first>
+                              </rdf:rest>
+                            </rdf:rest>
+                            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >Average</rdf:first>
+                          </rdf:rest>
+                          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                          >Ears</rdf:first>
+                        </rdf:rest>
+                      </rdf:rest>
+                    </rdf:rest>
+                    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >CMS</rdf:first>
+                  </rdf:rest>
+                </rdf:rest>
+                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Linked Mastoids</rdf:first>
+              </rdf:rest>
+              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+              >Mastoids</rdf:first>
+            </rdf:rest>
+          </rdf:rest>
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Right Mastoid</rdf:first>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+    <rdfs:comment xml:lang="en">[ESS 2.0] Location of the reference channel or channels used during EEG or ECG recording.  Should only be provided if [bci:hasModalitySignalType] is EEG or ECG.
+
+For EEG, choose between the following values (or provide a new value if the reference is not any of these options):
+  "Right Mastoid",
+  "Left Mastoid",
+  "Mastoids",
+  "Linked Mastoids" [for electrically linked mastoids],
+  "Cz" [top of the head],
+  "CMS" [e.g. in BIOSEMI],
+  "Left Ear",
+  "Right Ear",
+  "Ears",
+  "Average",
+  "Nasion",
+  "Nose".
+
+For Wilson Central Terminal ECG reference use "WCT".</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasNumberOfUsedCameras">
+    <rdfs:domain rdf:resource="#RecordedModality"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasTitle">
+    <rdfs:comment xml:lang="en">Title or logical name of the entity.</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BciRecord"/>
+          <owl:Class rdf:about="#RecordedModality"/>
+          <owl:Class rdf:about="#Study"/>
+          <owl:Class rdf:about="#Resource"/>
+          <owl:Class rdf:about="#BciSession"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:FunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#hasBiomedicalResource">
+    <rdfs:comment xml:lang="en">Information about biomedical recorded files or streams (EEG, EMG, EOG, etc). Each individual represents a raw BCI recorded file/stream of a specific format.</rdfs:comment>
+    <owl:inverseOf rdf:resource="#isBiomedicalResourceOf"/>
+    <rdfs:domain rdf:resource="#BciRecord"/>
+    <rdfs:range rdf:resource="#BiomedicalResource"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:InverseFunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#hasBciRecord">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <owl:inverseOf rdf:resource="#isBciRecordOf"/>
+    <rdfs:domain rdf:resource="#BciSession"/>
+    <rdfs:comment xml:lang="en">Information about each individual "BCI Record" that is part of a "BCI Session".</rdfs:comment>
+    <rdfs:range rdf:resource="#BciRecord"/>
+  </owl:InverseFunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#hasDataSet">
+    <rdfs:domain rdf:resource="#Subject"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <owl:inverseOf rdf:resource="#isFromSubject"/>
+    <rdfs:range>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BiomedicalResource"/>
+          <owl:Class rdf:about="#BciRecord"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+  </owl:InverseFunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#hasBciSession">
+    <owl:inverseOf rdf:resource="#isBciSessionOf"/>
+    <rdfs:comment xml:lang="en">
+      Information about each individual "Session" that is part of a "Collection".</rdfs:comment>
+    <rdfs:domain rdf:resource="#Study"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#BciSession"/>
+  </owl:InverseFunctionalProperty>
+  <owl:DataRange>
+    <owl:oneOf rdf:parseType="Resource">
+      <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+      >EEG</rdf:first>
+      <rdf:rest rdf:parseType="Resource">
+        <rdf:rest rdf:parseType="Resource">
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >Visual</rdf:first>
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Motion</rdf:first>
+            <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+          </rdf:rest>
+        </rdf:rest>
+        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >Audio</rdf:first>
+      </rdf:rest>
+    </owl:oneOf>
+  </owl:DataRange>
+</rdf:RDF>
+<!-- Created with Protege (with OWL Plugin 3.4.8, Build 629)  http://protege.stanford.edu -->

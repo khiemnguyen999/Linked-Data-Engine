@@ -1,0 +1,97 @@
+@import url('http://fonts.googleapis.com/css?family=Open+Sans');
+
+/* For HTML file */
+body{background:url('../image/body_background_transparent.png');font-family: 'Open Sans', sans-serif; font-size:15px; padding-left:10px}
+.breadcrumb{color:#999; font-size:16px; font-weight:bold; line-height:32px}
+#contentbox{display:block; font-family: 'Open Sans', sans-serif; font-size:14px; line-height:25px; padding:7px 17px 7px 17px; text-align:justify; width:96%}
+div.botmenu_fixed{background:black;bottom:0px;color:white;font-weight:bold;padding:10px;position:fixed;opacity:0.7;text-align:center;width:100%;}
+#blank{height: 10%; width: 100%;}
+#float_dashboard{opacity:0.8}
+.formGroup{padding-left:10px}
+h1{color:blue;text-shadow:1px 1px 2px #ccc}
+.imgbutton{margin:0px 0px -5px 5px; opacity:0.6; width:18px}
+.imgbutton:hover{cursor:pointer;opacity:1}
+input{margin-bottom:3px}
+.InfoWrap{background:#e5eeee; color:#333; padding:7px; width:99%}
+.heading{color:darkblue}
+label{display:inline-block; width:280px}
+#left_sidebar{background:#fff; border:3px solid #999; border-radius:5px; box-shadow:3px 3px 3px #ccc; display:table-cell; padding:7px 7px 7px 7px;width:30%}
+.li1{cursor:pointer}
+.li1:hover{color:blue}
+.li2{cursor:pointer; font-size:10px}
+.li2:hover{color:darkred}
+.linklike{text-decordation:underline}
+.linklike:hover{cursor:pointer; font-style:italic; text-decordation:none}
+.nonunderline{text-decoration:none}
+.nonunderline:hover{color:darkred}
+#panel{background:black; border-radius:5px;top:0px;position:fixed;width:98%;}
+#panel div{display:inline-block; padding:10px; vertical-align:middle;}
+#params{background:#f0f6f6; border:3px solid #999; border-radius:5px; box-shadow:3px 3px 3px #ccc; display:table-cell; padding:7px 15px 7px 7px;}
+#right_sidebar{background:#f0f6f6; border:3px solid #999; border-radius:5px; box-shadow:3px 3px 3px #ccc; display:table-cell; padding:7px 7px 7px 7px;width:70%}
+#search_result{border:3px solid #999; border-radius:5px; box-shadow:3px 3px 3px #ccc; list-style-image:url('../image/icon-list.gif');}
+#search_result li2{font-size:11px}
+#search_result .SWrap{cursor:auto; width:98%}
+#setting,#setting input{font-size:10px}
+.SID{color:darkblue; font-weight:bold}
+.sortableplaceholder{background:#e0e5e5; border:1px dashed #666; height:20px;border-radius:5px; width:100%}
+.th td{background:#555; color:#fff; text-align:center}
+tr:hover td{background:#d3d3f6}
+#tree{list-style-image:url('../image/icon_folder.png');}
+#footer{border-top: 1px solid #444; padding: 7px 0px 7px 0px; color:#444; font-style:italic; font-size: 12px;}
+#wrapper{clear:both;display:block;margin-top:140px;width:100%}
+
+/* For menu */
+#cha{fontsize: 10px; list-style-type: none;background:#cde;width:100%;margin: 0px 0px 0px -25px}
+#cha li{float:left;	margin:1px;	padding:5px 15px; background:#cde; position:relative; border:1px solid #abc; border-radius:3px;}
+#cha ul{list-style-type: none;padding:0; position:absolute; visibility:hidden; top:35px; left:0px;}
+#cha li ul li{float:none; white-space:nowrap; position:relative;}
+#cha a{text-decoration:none;}
+#cha li:hover{background:#abc; z-index:1;}
+/*menu cap 3*/
+#cha ul ul{padding:0; position:absolute; visibility:hidden;left:110px; top:0px;}
+#cha li ul li ul li{float:none;white-space:nowrap;}
+.customlist li{line-height:1.5}
+.customlist li a{color:darkblue; text-decoration: none}
+.customlist li a:hover{color:#fff; text-decoration: none}
+#menubar{background:#cde; display: inline-block;top:115px;position:fixed;width:98%;}
+#newmenuitem{-moz-animation:dichuyen 10s; -moz-animation-iteration-count: infinite;}
+table.properties { margin-left: 1em; width: 80%; background-color: #f3f3ff; }
+table.properties th { text-align: left; width: 9em; font-weight: normal;}
+
+/* Added more support for engine */
+table { border-collapse: collapse;  border: solid #999999 1px;}
+table thead { border-bottom: solid #999999 2px; }
+table td, table th { border-left: solid #999999 1px; border-right: solid #999999 1px; border-bottom: solid #999999 1px;; vertical-align: top; padding: 0.2em; }
+h2 { font: 800 140% sans-serif; border-bottom: 1px solid gray;text-align: left;color: #996633; background: transparent; } 
+@-moz-keyframes dichuyen 
+{
+0%   {background: #cde; border:3px solid red; left:0}
+25%  {background: #abc; border:3px solid yellow; left:0.5%}
+50%  {background: #fff; border:3px solid blue;  left:1%}
+75%  {background: #abc; border:3px solid green;  left:0.5%}
+100% {background: #cde; border:3px solid red; left:0}
+}
+dd { margin-top: 0; margin-bottom: 0; }
+dt { margin-top: 0.75em; margin-bottom: 0.25em; clear: left; }
+dd dt { margin-top: 0.25em; margin-bottom: 0; }
+dd p { margin-top: 0; }
+dt { font-weight: bold; font-style: normal; }
+
+
+/* For BCI */
+.StdWrap{background:#e5eeee; width:98%}
+/* Session */
+.SsWrap{background:#e5eeee; width:98%}
+.SWrap{background:#f0f4f4; border:1px solid #8bd; border-radius:5px; box-shadow:3px 3px 3px #ccc; margin-bottom:3px;}
+.SWrap prop{color:darkblue}
+/* Biomedical Resource */
+.BRWrap{background:#ccffee; color:darkgreen; padding:5px; width:98%}
+.BRInfo{color:darkgreen}
+/* Subject */
+.SubWrap{background:#e5eeee; color:darkblue; padding:5px; width:98%}
+/* Recorded Modality */
+.RMInfo{color:black}
+.RMInfo prop{color:gray}
+
+
+

@@ -1,0 +1,35 @@
+<powder xmlns="http://www.w3.org/2007/05/powder#"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+		xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+		xmlns:owl="http://www.w3.org/2002/07/owl#"
+		xmlns:dul="http://www.loa-cnr.it/ontologies/DUL.owl#"
+		xmlns:ssn="http://purl.oclc.org/NET/ssnx/ssn#"
+        xmlns:dbp="http://dbpedia.org/ontology/"
+        xmlns:bci="http://bci.pet.cs.nctu.edu.tw/ontology#">
+  <attribution>
+    <issuedby src="http://bci.pet.cs.nctu.edu.tw/ontology?cerebraweb.rdf#Cerebraweb.net" />
+    <issued>YYYY-MM-DDTHH:nn:ss</issued>
+  </attribution>
+
+  <dr>
+    <iriset>
+      <includeschemes>http https</includeschemes>
+      <includehosts>cerebraweb.net bci.pet.cs.nctu.edu.tw</includehosts>
+	  <includeexactpaths>/ontology</includeexactpaths>
+	  <!-- non-compliant -->
+	  <includeexactfragment>#</includeexactfragment>
+    </iriset>
+
+    <descriptorset rdf:resource=" ## 3 ## URI-of-the-resource ">
+      
+	  <displaytext>display text</displaytext>
+
+	  <seealso>rdfs:seeAlso</seealso>
+	  <label>rdfs:label</label>
+	  <comment>rdfs:comment</comment>
+	  <typeof>rdf:type</typeof>
+	  
+    </descriptorset>
+  </dr>
+</powder>

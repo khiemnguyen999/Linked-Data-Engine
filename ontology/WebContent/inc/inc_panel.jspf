@@ -1,0 +1,9 @@
+<div id="panel" style="background:url('public/image/background.png'); ">
+			<div>
+				<img src="public/image/logo.png" height="90px">
+			</div>
+			<div style="color:white; text-alignment:center;">
+				<b style="font-size:27px">CerebraWeb.net</b><br/>
+				<i style="color:#bbb" id="pageheading">PET Lab - National Chiao Tung University</i>
+			</div>
+</div>

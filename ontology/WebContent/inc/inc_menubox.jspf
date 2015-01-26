@@ -1,0 +1,16 @@
+<div id="menubar">
+            <ul class='customlist' id='cha'>
+				<li><a href='index.jsp'>Home</a></li>
+				<li><a href="technology.jsp"  onMouseOver="mo('con1')" onMouseOut="cho()">Technology</a>
+					<ul id="con1" onMouseOver="chon()" onMouseOut="cho()">
+						<li><a href='http://bci.pet.cs.nctu.edu.tw/apiwiki/#!bci_sparql_mediator/index.md'>RESTful BCI API</a></li>
+						<li><a href='ontology.jsp'>BCI Semantic Data Model</a></li>						
+					</ul>
+				</li>
+				<li><a href='upload.jsp'>BCI Data Upload</a></li>
+				<li><a href='repository.jsp'>BCI Data Repository</a></li>
+				<li><a href='semanticsearch.jsp'>BCI Semantic Data Search</a></li>
+				<li><a href='contactus.jsp'>Contact us</a></li>
+				<li style='margin-right:20px;float:right'><a href='javascript:banner_toggle()'><img src="public/image/up.png" height='15px'></a></li>
+			</ul>
+</div>
